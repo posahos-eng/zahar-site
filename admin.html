@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>El.Masry - لوحة الإدارة</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="site-header"><h1>لوحة الإدارة</h1></header>
+  <main class="container">
+    <section>
+      <h2>تسجيل الدخول كأدمن</h2>
+      <input id="adminuser" placeholder="اسم المستخدم">
+      <input id="adminpass" placeholder="كلمة المرور" type="password">
+      <button id="adminlogin">دخول كأدمن</button>
+
+      <h3>قائمة الرفع</h3>
+      <button id="fetchUploads">جلب الرفع</button>
+      <ul id="uploadsList"></ul>
+    </section>
+  </main>
+
+<script>
+document.getElementById('adminlogin').addEventListener('click', async () => {
+  const u = document.getElementById('adminuser').value;
+  const p = document.getElementById('adminpass').value;
+  const res = await fetch('/api/login', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({username:u, password:p})});
+  const j = await res.json();
+  alert(j.ok ? 'تم تسجيل الدخول' : 'فشل');
+});
+
+document.getElementById('fetchUploads').addEventListener('click', async () => {
+  const res = await fetch('/api/uploads');
+  if (res.status === 200) {
+    const j = await res.json();
+    const list = document.getElementById('uploadsList');
+    list.innerHTML = '';
+    j.uploads.forEach(item => {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = item.file;
+      a.textContent = item.name;
+      li.appendChild(a);
+      list.appendChild(li);
+    });
+  } else {
+    alert('لا تملك صلاحيات أو حدث خطأ: ' + res.status);
+  }
+});
+</script>
+</body>
+</html>

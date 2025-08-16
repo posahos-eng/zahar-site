@@ -1,0 +1,21 @@
+
+# Prevent access to hidden files
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+
+# Prevent access to sensitive files
+<FilesMatch "(^package\.json|\.md|\.csv|\.env)$">
+    Require all denied
+</FilesMatch>
+
+# Set default index
+DirectoryIndex index.html
+
+# Enable rewrite engine
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule . /index.html [L]
+</IfModule>

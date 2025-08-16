@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>El.Masry - بث وميديا</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <h1>El.Masry</h1>
+    <nav>
+      <a href="/player.html">تشغيل فيديو</a>
+      <a href="/admin.html">لوحة الإدارة</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h2>موقع بث وميديا متكامل</h2>
+      <p>نظام عضويات، رفع فيديوهات، لوحة تحكم، وتصميم متجاوب جاهز للاستخدام.</p>
+      <div class="auth">
+        <input id="username" placeholder="اسم المستخدم">
+        <input id="password" placeholder="كلمة المرور" type="password">
+        <button id="signup">تسجيل</button>
+        <button id="login">دخول</button>
+      </div>
+    </section>
+
+    <section class="features">
+      <h3>المميزات</h3>
+      <ul>
+        <li>واجهة احترافية ومتحركة</li>
+        <li>رفع فيديوهات وتشغيلها</li>
+        <li>نظام عضويات / اشتراكات (قابل للتوسيع)</li>
+        <li>لوحة تحكم للإدارة</li>
+        <li>دعم موبايل، تابلت، وكمبيوتر</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <small>El.Masry — نسخة تجريبية للتسليم السريع</small>
+  </footer>
+
+<script>
+const signupBtn = document.getElementById('signup');
+const loginBtn = document.getElementById('login');
+
+signupBtn && signupBtn.addEventListener('click', async () => {
+  const username = document.getElementById('username').value.trim();
+  const password = document.getElementById('password').value;
+  const res = await fetch('/api/signup', {method:'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({username,password})});
+  const j = await res.json();
+  alert(j.ok ? 'تم التسجيل' : ('خطأ: '+(j.error||'فشل')));
+});
+
+loginBtn && loginBtn.addEventListener('click', async () => {
+  const username = document.getElementById('username').value.trim();
+  const password = document.getElementById('password').value;
+  const res = await fetch('/api/login', {method:'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({username,password})});
+  const j = await res.json();
+  alert(j.ok ? 'تم الدخول' : ('خطأ: '+(j.error||'فشل')));
+});
+</script>
+</body>
+</html>
